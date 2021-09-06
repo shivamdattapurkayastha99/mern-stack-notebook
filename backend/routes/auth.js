@@ -1,13 +1,14 @@
 const express=require('express');
 const router=express.Router();
-const User=require('../models/User')
+const User=require('../models/User');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 const JWT_SECRET='shivamisagoodboy';
-router.post('/',[
-    body('email').isEMail(),
+router.post('/createuser',[
+    body('email').isEmail(),
     body('name').isLength({ min: 3 }),
+    body('password').isLength({ min: 5 }),
 ],async(req,res)=>{
     
     const errors = validationResult(req);
@@ -34,12 +35,48 @@ router.post('/',[
       }
       const authtoken=jwt.sign(data,JWT_SECRET);
       console.log(authtoken);
-      res.json((authtoken))
+      res.json({ authtoken })
     }
     catch(error){
         console.error(error.message)
         res.status(500).send("Some Error Occured");
 
     }
+    
+})
+router.post('/login',[
+    body('email').isEmail(),
+    
+    body('password').exists(),
+],async(req,res)=>{
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const{email,body}=req.body;
+    try {
+        let user=await User.findOne({email});
+        if (!user) {
+            return res.status(400).json({"error":"User does not exist"})
+        }
+        const passwordCompare=await bcrypt.compare(password,user.password);
+        if (!passwordCompare) {
+            return res.status(400).json({"error":"User does not exist"})
+        }
+        const payload={
+            user: {
+                id:user.id
+            }
+
+            
+    }
+    const authtoken=jwt.sign(data,JWT_SECRET);
+    res.json({authtoken})
+    } catch(error){
+        console.error(error.message)
+        res.status(500).send("Some Error Occured");
+
+    }
+
 })
 module.exports=router
