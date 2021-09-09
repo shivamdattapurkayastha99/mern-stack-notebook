@@ -55,7 +55,7 @@ router.put('/updatenote/:id', fetchUser, [
         newNote.tag=tag
 
     }
-    const note=Notes.findById(req.params.id)
+    let note=await Notes.findById(req.params.id)
     if (!note) {
         return res.status(404).send("not found")
     }
