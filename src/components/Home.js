@@ -3,7 +3,8 @@ import React from 'react'
 export const Home = () => {
     return (
         <div>
-            this is home 
+            {/* this is home  */}
+            
         </div>
     )
 }
