@@ -1,6 +1,12 @@
 import React from 'react'
 
+// import { useContext } from 'react/cjs/react.development'
+
+import Notes from './Notes'
+
 export const Home = () => {
+    
+
     return (
         <div>
             <div className="container my-3">
@@ -24,9 +30,7 @@ export const Home = () => {
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
             </div>
-            <div className="container my-3">
-            <h2>Your Notes</h2>
-            </div>
+            <Notes></Notes>
 
         </div>
     )
