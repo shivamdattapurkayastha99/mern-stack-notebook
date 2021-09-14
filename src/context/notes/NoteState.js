@@ -7,19 +7,19 @@ const NoteState=(props)=>{
     const notesInitial=[]
     const [notes, setNotes] = useState(notesInitial)
     const getNotes=async()=>{
-        const response = await fetch(`${host}/api/notes/fetchallnotes`, {
-            method: 'GET',
-            
-            headers: {
-              'Content-Type': 'application/json'
-              
-            },
-            
-            
-          });
+      const response = await fetch(`${host}/api/notes/fetchallnotes`, {
+        method: 'GET',
+        
+        headers: {
+          'Content-Type': 'application/json'
           
-          
-        const json=await response.json()
+        },
+        
+        
+      });
+      
+      
+    const json=await response.json()
         console.log(json);
         setNotes(json)
     }
@@ -48,7 +48,21 @@ const NoteState=(props)=>{
 
         setNotes(notes.concat(note))
     }
-    const deleteNote=(id)=>{
+    const deleteNote=async(id)=>{
+      const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+        method: 'DELETE',
+        
+        headers: {
+          'Content-Type': 'application/json'
+          
+        },
+        
+        
+      });
+      
+      
+        const json=await response.json()
+        console.log(json);
         console.log("deleting the note with id "+id);
         const newNotes=notes.filter((note)=>{return note._id!==id})
         setNotes(newNotes)
